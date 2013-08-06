@@ -10,10 +10,21 @@ var express = require('express')
   , http = require('http')
   , path = require('path');
 
+
 var app = express();
 mongojs = require("mongojs")
-db = mongojs('local', ['things']);
+db = mongojs('local', ['Products', 'users']);
 
+/**
+*	Auth
+*/
+var auth = require('basic-auth')({
+  name: 'Test Auth',
+  accounts: [
+    'test:password',
+    'test2:password2'
+  ]
+}).auth;
 
 
 // all environments
@@ -47,22 +58,18 @@ app.get('/users', user.list);
  *
  */
 
-app.get('/api', api.index);
-app.get('/api/productos', api.productos);
-app.get('/api/producto/:id', api.producto);
-app.post('/api/producto/add', api.producto_add);
+app.get('/api', api.index);//info del api
+app.get('/api/productos', api.productos);//Todos los productos 
+app.get('/api/producto/:id', api.producto);//id de producto 
+app.post('/api/productos', api.producto_add);//
+/*
+app.put('/api/producto/', api.producto_add)
+app.delete('/api/producto/', api.producto_add)
+*/
+app.post('/api/auth', api.auth);
 // app.get('/api/producto/edit/:id', api.productoedit);
 
 // app.get('/api/producto/del', api.productoedit);
-
-
-
-
-
-
-
-
-
 
 
 http.createServer(app).listen(app.get('port'), function(){

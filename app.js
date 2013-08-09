@@ -13,7 +13,7 @@ var express = require('express')
 
 var app = express();
 mongojs = require("mongojs")
-db = mongojs('local', ['Products', 'users']);
+db = mongojs('local', ['Products', 'Categories','users']);
 
 /**
 *	Auth

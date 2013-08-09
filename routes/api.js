@@ -1,4 +1,4 @@
-ObjectId = require("mongojs").ObjectId;
+var ObjectId = require("mongojs").ObjectId;
 
 exports.index  = function(req, res){
 	res.setHeader('Content-Type', 'text/plain');
@@ -17,7 +17,7 @@ exports.productos = function(request, response){
 
 exports.producto = function(request, response){
 	var id = request.params.id;
-  console.log("-----------------------------" + id);
+  console.log("------------------" + id);
 	db.Products.find({ _id : ObjectId(id)  }, function(err, Products) {
   		if( err || !Products) 
   			response.send("No products found");
@@ -27,34 +27,59 @@ exports.producto = function(request, response){
 }
 
 exports.producto_add = function (request, response){
-    if(request.is('application/json'))
-    {
-	var jsn = request.body;
-	var msg = "";
-	if (typeof jsn.model === 'undefined')
-	    msg = "You dont have defined the field model";
-	if (typeof jsn.brand === 'undefined')
+  if(request.is('application/json'))
+  {
+    var jsn = request.body;
+	  var msg = "";
+    if (typeof jsn.model === 'undefined'){
+      msg = "You dont have defined the field model";
+    } else if (typeof jsn.brand === 'undefined'){
 	    msg = "You dont have defined the field brand";
-	if (typeof jsn.description === 'undefined')
+    } else if (typeof jsn.description === 'undefined'){
 	    msg = 'You dont have defined the field description';
-	if (typeof jsn.cat === 'undefined')
+    } else if (typeof jsn.cat === 'undefined'){
 	    msg = "You dont hace defined the field Category";
-	if (typeof jsn.subcat === 'undefined')
+    } else if (typeof jsn.subcat === 'undefined'){
 	    msg = "You dont have defined the field SubCategory";
-	
-	if(msg)
-	{
-	    response.send(msg);
-	    response.set("Connection", "close");
-	}else{
-	    db.Products.save(jsn, function(err, Products){
-		if( err || !Products) 
-		    response.send("Cant add a Product");
-                else 
-		    response.send("you add a Product");
-	    });
-	}
+  	} else {
+      db.Products.find({'model' : jsn.model, 'brand': jsn.brand }, function(err, Products){
+        if(Products.length > 0){
+          msg = "The product alredy exists";
+        }
+      });
+      db.Categories.find({'cat' : jsn.cat, 'subcat': jsn.subcat }, function(err, Products){
+        if(Products.length > 0){
+          msg = "Somenthing is wrong with Categories";
+        }
+      });
     }
+
+  	if(msg)
+  	{
+        response.status(200);
+  	    response.send(msg);
+  	    response.set("Connection", "close");
+  	}else{
+      var nwProduct = {
+        "model" : jsn.model,
+        "brand" : jsn.brand,
+        "description" : jsn.description,
+        "cat": jsn.cat,
+        "subcat" : jsn.subcat
+      };
+
+	    db.Products.save(nwProduct, function(err, Products){
+    		if( err || !Products) 
+        {
+            response.status(200);
+    		    response.send("You can not add a product");
+        } else {
+            response.status(201);
+    		    response.send(Products);
+        }
+    	});
+    }
+  }
 }
 
 exports.auth = function (request, response){

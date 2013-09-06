@@ -15,18 +15,6 @@ var app = express();
 mongojs = require("mongojs")
 db = mongojs('local', ['Products', 'Categories','users']);
 
-/**
-*	Auth
-*/
-var auth = require('basic-auth')({
-  name: 'Test Auth',
-  accounts: [
-    'test:password',
-    'test2:password2'
-  ]
-}).auth;
-
-
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
@@ -35,8 +23,8 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-  app.use(express.cookieParser('your secret here'));
-  app.use(express.session());
+app.use(express.cookieParser('your secret here'));
+app.use(express.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -73,6 +61,6 @@ app.post('/api/auth', api.auth);
 
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+    console.log('Express server listening on port ' + app.get('port'));
 });
 

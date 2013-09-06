@@ -6,7 +6,6 @@ exports.index  = function(req, res){
 };
 
 exports.productos = function(request, response){
-  debugger;
 	db.Products.find(function(err, Products) {
   		if( err || !Products) 
   			response.send("No products found");
@@ -17,7 +16,6 @@ exports.productos = function(request, response){
 
 exports.producto = function(request, response){
 	var id = request.params.id;
-  console.log("------------------" + id);
 	db.Products.find({ _id : ObjectId(id)  }, function(err, Products) {
   		if( err || !Products) 
   			response.send("No products found");
@@ -27,64 +25,71 @@ exports.producto = function(request, response){
 }
 
 exports.producto_add = function (request, response){
-  if(request.is('application/json'))
-  {
-    var jsn = request.body;
-	  var msg = "";
-    if (typeof jsn.model === 'undefined'){
-      msg = "You dont have defined the field model";
-    } else if (typeof jsn.brand === 'undefined'){
-	    msg = "You dont have defined the field brand";
-    } else if (typeof jsn.description === 'undefined'){
-	    msg = 'You dont have defined the field description';
-    } else if (typeof jsn.cat === 'undefined'){
-	    msg = "You dont hace defined the field Category";
-    } else if (typeof jsn.subcat === 'undefined'){
-	    msg = "You dont have defined the field SubCategory";
-  	} else {
-      db.Products.find({'model' : jsn.model, 'brand': jsn.brand }, function(err, Products){
-        if(Products.length > 0){
-          msg = "The product alredy exists";
-        }
-      });
-      db.Categories.find({'cat' : jsn.cat, 'subcat': jsn.subcat }, function(err, Products){
-        if(Products.length > 0){
-          msg = "Somenthing is wrong with Categories";
-        }
-      });
-    }
+    if(request.is('application/json'))
+    {
+        var jsn = request.body;
+        var msg = "";
+        if (typeof jsn.model === 'undefined'){
+            msg = "You dont have defined the field model";
+        } else if (typeof jsn.brand === 'undefined'){
+	        msg = "You dont have defined the field brand";
+        } else if (typeof jsn.description === 'undefined'){
+	        msg = 'You dont have defined the field description';
+        } else if (typeof jsn.cat === 'undefined'){
+	        msg = "You dont hace defined the field Category";
+        } else if (typeof jsn.subcat === 'undefined'){
+	        msg = "You dont have defined the field SubCategory";
+  	    } else if (msg === ""){
+            db.Products.find({'model' : jsn.model, 'brand': jsn.brand }, function(err, Products){ 
+                if(Products.length > 0){
+                    msg = "The product alredy exists";
+                    response.status(200);
+                    response.send(msg);
+                    response.set("Connection", "close");
+                }
+                else if (msg === ""){
+                    db.Categories.find({'cat' : jsn.cat, 'subcat': jsn.subcat }, function(err, Products){
+                        if(Products.length === 0){
+                            msg = "Somenthing is wrong with Categories";
+                            response.status(200);
+                            response.send(msg);
+                            response.set("Connection", "close");
+                        }else{
+                            var nwProduct = {
+                                "model" : jsn.model,
+                                "brand" : jsn.brand,
+                                "description" : jsn.description,
+                                "cat": jsn.cat,
+                                "subcat" : jsn.subcat
+                            };
 
-  	if(msg)
-  	{
-        response.status(200);
-  	    response.send(msg);
-  	    response.set("Connection", "close");
-  	}else{
-      var nwProduct = {
-        "model" : jsn.model,
-        "brand" : jsn.brand,
-        "description" : jsn.description,
-        "cat": jsn.cat,
-        "subcat" : jsn.subcat
-      };
-
-	    db.Products.save(nwProduct, function(err, Products){
-    		if( err || !Products) 
-        {
+                            db.Products.save(nwProduct, function(err, Products){
+                                if( err || !Products) 
+                                {
+                                    response.status(200);
+                                    response.send("You can not add a product");
+                                } else {
+                                    response.status(201);
+                                    response.send(Products);
+                                }
+                            });
+                        }
+                    });
+                } else if (msg !== ""){
+                    response.status(200);
+                    response.send(msg);
+                    response.set("Connection", "close");
+                }
+            });
+        } else if (msg !== "") {
             response.status(200);
-    		    response.send("You can not add a product");
-        } else {
-            response.status(201);
-    		    response.send(Products);
+            response.send(msg);
+            response.set("Connection", "close");
         }
-    	});
     }
-  }
 }
 
 exports.auth = function (request, response){
-  console.log(typeof request.session.user );
-  if (typeof request.session.user != undefined){
     var data = request.body;
     console.log('user : ' + data.user);
     console.log('pass : ' + data.pass);
@@ -101,11 +106,6 @@ exports.auth = function (request, response){
           response.send("{ }");
         }
       }
-    });
-  }
-  else{
-    response.send('You\'re Logged Stupid Moron');
-  }
-
+    }); 
 }
 //curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"user": "omis rios"}' http://189.190.254.128:3000/api/producto/add

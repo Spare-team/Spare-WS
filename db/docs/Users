@@ -1,0 +1,49 @@
+Rios...
+
+Usuarios
+Tendran una cuenta, la cuanta consta de los siguientes aprtados
+-----Datos Usuario
+	UserName
+	Password
+	Correo
+	Datos localidad
+
+
+
+-----articulos a seguir (que a su vez son favoritos)
+	-Opciones y acciones  que tendra este apartado:
+	 debera tener opcion dejar de seguir,
+	 Cuando el articulo selecconado sea actualizado, se debera notificar al usuario que hubo un cambio 
+	 sugerencias en base a sus gustos
+	 Promociones
+	?(deberiamos ver la manera de obtener los datos consultados, pero no marcados como favoritos, para
+	 sugerirle ms categorias y articulos)
+
+	-Datos:
+	 Articulo a seguir-> dbee envirame a los comentarios
+	 Id Usuario que sigue
+	 Fecha de actualizacion
+	 Bandra de ultima notificacioni
+
+
+
+
+-----Consultas Reciente
+	 Datos: articulos(bien cagado)
+
+-----Contribuciones(aportes): Son los comentarios, ranking (Aqui va un enlace a los datos del richard), 	  productos de 	  alta y 	  modificados 
+	Aqui la relaciones se costruiran como atravez de estas collecciones seran por referencia: ejemplo en la coleccion de ranking se aloja el id del usuario para saber quien a ranqueado
+
+
+-----Los usuarios pueden navegar, y consultar  sin loguearse
+	?(Podran actualizar productos sin hacerlo sin loguearse)
+	 o se considera que la manera mas rapida de hacerlo es
+	 con loguearse awebo putos con OAth
+
+-----Obvio logueo
+
+
+
+
+
+

@@ -12,3 +12,10 @@ for(var i=0; i<products.length;i++){
 		subcat: products[i].subcat
 	});
 }
+
+
+use local;
+db.createCollection("Users")
+var adress={country:'Mexico',statet:''city:''};
+db.Users.insert({userName:'Rios',passWord:"111",email:'Rios@Spare.com'})
+

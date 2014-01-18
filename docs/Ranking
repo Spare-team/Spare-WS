@@ -1,0 +1,25 @@
+Ricardo...
+
+Ranking 
+Se refiere a las calificaciones, despues de un analisis intensivo creo que deberian estar en el mismo producto
+
+------ Product
+	_id   : (model-brand)
+ 	model : 
+	brand : 
+	description : 
+	cat : //categoria
+	subcat : //subcategoria
+	ranks :[
+		{ 
+		user: 'pepe',
+		comment : 'this product is awesome',
+		date : iso-date('what-ever'),
+			ranks : [
+				{ 'cal1': 4.9 },
+				{ 'cal2': 4.1 },
+				{ 'cal3': 4.7 }	
+			],
+			 
+		}
+	]

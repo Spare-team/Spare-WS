@@ -13,6 +13,29 @@ exports.productos = function(request, response){
   			response.send(Products);
 	});
 }
+// Rios User wdf!
+exports.userMarcados = function(request, response){
+    // var id = request.params.id;
+    // db.Users.find({_id:: ObjectId(id)},function(err, userParameter) {
+    //     if( err || !userParameter) 
+    //         response.send("No users found");
+    //     else{
+    //             var aProductosMarcados=userParameter.productosMarcados;
+    //             for (var p in aProductosMarcados)
+    //             {
+    //                 theUser.
+    //             }
+    //         }
+
+db.Products.find({ _id : ObjectId("52e3ee50ea74ebc31ebf4c83")  }, function(err, Products) {
+        if( err || !Products) 
+            response.send("No products found");
+        else 
+            response.send(Products);
+    });
+}
+
+
 
 exports.producto = function(request, response){
 	var id = request.params.id;

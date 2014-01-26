@@ -11,3 +11,11 @@ db.Users.insert(
 	}
 	)
 
+// Un usuario puede tener n articulos marcados
+db.Users.update({userName:"Rios"},
+		{
+			$set:{
+					productosMarcados: {_id:ObjectId("52e3ee50ea74ebc31ebf4c83")}
+			}
+		}
+	)

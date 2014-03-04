@@ -15,6 +15,12 @@ exports.productos = function(request, response){
 }
 // Rios User wdf!
 exports.userMarcados = function(request, response){
+        db.Products.find(function(err, Products) {
+            if( err || !Products) 
+                response.send("No products found");
+            else 
+                response.send(Products);
+        });
     // var id = request.params.id;
     // db.Users.find({_id:: ObjectId(id)},function(err, userParameter) {
     //     if( err || !userParameter) 
@@ -27,12 +33,25 @@ exports.userMarcados = function(request, response){
     //             }
     //         }
 
-db.Products.find({ _id : ObjectId("52e3ee50ea74ebc31ebf4c83")  }, function(err, Products) {
-        if( err || !Products) 
-            response.send("No products found");
-        else 
-            response.send(Products);
-    });
+// db.Products.find(
+// var pm=db.Users.findOne({'productosMarcados.$ref':'Products'})
+// var aProductosUsuario=[];
+
+// pm.productosMarcados.forEach(function(doc){
+
+//  var producto=doc.fetch(); aProductosUsuario.push(producto); 
+// })
+
+
+
+
+
+// , function(err, Products) {
+//         if( err || !Products) 
+//             response.send("No products found");
+//         else 
+//             response.send(Products);
+//     });
 }
 
 

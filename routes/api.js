@@ -1,27 +1,22 @@
-var ObjectId = require("mongojs").ObjectId;
-
 exports.index  = function(req, res){
 	res.setHeader('Content-Type', 'text/plain');
 	res.send("API RESTful 0.01");
 };
 
 exports.productos = function(request, response){
-	db.Products.find(function(err, Products) {
-  		if( err || !Products) 
-  			response.send("No products found");
-  		else 
-  			response.send(Products);
-	});
+    Product.find(function(error,data){
+        if (error) return;
+        response.send( data );
+    });
 }
 
 exports.producto = function(request, response){
 	var id = request.params.id;
-	db.Products.find({ _id : ObjectId(id)  }, function(err, Products) {
-  		if( err || !Products) 
-  			response.send("No products found");
-  		else 
-  			response.send(Products);
-	});
+
+    Product.find({ _id : Schema.Types.ObjectId(id)  }, function(error,data){
+    if (error) return;
+        response.send( data );
+    });
 }
 
 exports.producto_add = function (request, response){
@@ -40,7 +35,8 @@ exports.producto_add = function (request, response){
         } else if (typeof jsn.subcat === 'undefined'){
 	        msg = "You dont have defined the field SubCategory";
   	    } else if (msg === ""){
-            db.Products.find({'model' : jsn.model, 'brand': jsn.brand }, function(err, Products){ 
+            /*
+                db.Products.find({'model' : jsn.model, 'brand': jsn.brand }, function(err, Products){ 
                 if(Products.length > 0){
                     msg = "The product alredy exists";
                     response.status(200);
@@ -80,7 +76,8 @@ exports.producto_add = function (request, response){
                     response.send(msg);
                     response.set("Connection", "close");
                 }
-            });
+                });
+            */
         } else if (msg !== "") {
             response.status(200);
             response.send(msg);
@@ -93,6 +90,7 @@ exports.auth = function (request, response){
     var data = request.body;
     console.log('user : ' + data.user);
     console.log('pass : ' + data.pass);
+    /*
     db.users.find({ username : data.user , password : data.pass}, function(err, Products) {
       if( err || !Products) 
         response.send("No te puedes logear chamaco");
@@ -107,5 +105,6 @@ exports.auth = function (request, response){
         }
       }
     }); 
+*/
 }
 //curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"user": "omis rios"}' http://189.190.254.128:3000/api/producto/add

@@ -9,6 +9,48 @@ exports.productos = function(request, response){
         response.send( data );
     });
 }
+// Rios User wdf!
+exports.userMarcados = function(request, response){
+        db.Products.find(function(err, Products) {
+            if( err || !Products) 
+                response.send("No products found");
+            else 
+                response.send(Products);
+        });
+    // var id = request.params.id;
+    // db.Users.find({_id:: ObjectId(id)},function(err, userParameter) {
+    //     if( err || !userParameter) 
+    //         response.send("No users found");
+    //     else{
+    //             var aProductosMarcados=userParameter.productosMarcados;
+    //             for (var p in aProductosMarcados)
+    //             {
+    //                 theUser.
+    //             }
+    //         }
+
+// db.Products.find(
+// var pm=db.Users.findOne({'productosMarcados.$ref':'Products'})
+// var aProductosUsuario=[];
+
+// pm.productosMarcados.forEach(function(doc){
+
+//  var producto=doc.fetch(); aProductosUsuario.push(producto); 
+// })
+
+
+
+
+
+// , function(err, Products) {
+//         if( err || !Products) 
+//             response.send("No products found");
+//         else 
+//             response.send(Products);
+//     });
+}
+
+
 
 exports.producto = function(request, response){
 	var id = request.params.id;

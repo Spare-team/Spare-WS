@@ -25,6 +25,7 @@ var productSchema = Schema({
 	description : String,
 	cat : String,
 	subcat : String,
+	images : [String],
 	_ranks : [{ type: Schema.Types.ObjectId, ref : 'ranking' }],
 	_createdBy : { type: Schema.Types.ObjectId, ref : 'user' }
 });
@@ -88,12 +89,16 @@ app.get('/api/productos', function(req, res){
     });
 });//Todos los productos
 
-app.get('/api/producto/:id', function(req, res){
+app.get('/api/productos/:id', function(req, res){
 	var id = req.params.id;
 	console.log("====> " + id);
     Product.find({ _id : id  }, function(error,data){
-    if (error) return;
+    	if (error){
+    		res.send({});
+    	}
+    	else{
         res.send( data );
+    	}
     });
 });//id de producto 
 //app.post('/api/productos', api.producto_add);//
